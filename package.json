@@ -4,7 +4,7 @@
   "description": "simple API-service for checking country-by-name",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "rm -rf dist/ && npm run build && node dist/index.js",
     "start:dev": "nodemon src/index.ts",
     "build": "tsc --project ./",
     "lint": "tslint src/**/*.ts --fix"
@@ -24,9 +24,11 @@
   },
   "homepage": "https://github.com/highman95/country-search-node-ts#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/compression": "^1.7.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^16.10.2",
     "nodemon": "^2.0.13",
     "ts-node": "^10.2.1",

@@ -1,17 +1,9 @@
-import { NextFunction, Request, Response, Router } from "express";
-import authentication from "../middlewares/authentication";
-import rateLimiter from "../middlewares/rateLimiter";
+import { IRouter, NextFunction, Request, Response, Router } from "express";
+import UserController from "../modules/user/controller";
 
-export default function (router: Router): Router {
-  router.get(
-    "/country/name/:name",
-    authentication,
-    rateLimiter,
-    (req: Request, res: Response, next: NextFunction) => next()
-  );
-
-  router.post("/login", (req: Request, res: Response, next: NextFunction) =>
-    next()
+export default function (router: IRouter): Router {
+  [new UserController(router)].forEach((controller) =>
+    controller.initializeRoutes()
   );
 
   // set a default PING / Health-Check route
@@ -23,7 +15,7 @@ export default function (router: Router): Router {
   );
 
   // set a default route
-  router.use("*", (req: Request, res: Response, next: NextFunction) =>
+  router.get("*", (req: Request, res: Response, next: NextFunction) =>
     next(new ReferenceError("Page no longer exists"))
   );
 
