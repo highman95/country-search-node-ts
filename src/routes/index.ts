@@ -1,24 +1,14 @@
-import { IRouter, NextFunction, Request, Response, Router } from "express";
+import { IRouter, Router } from "express";
 import CountryController from "../modules/country/controller";
 import UserController from "../modules/user/controller";
+import UtilController from "../modules/util/controller";
 
 export default function (router: IRouter): Router {
-  [new CountryController(router), new UserController(router)].forEach(
-    (controller) => controller.initializeRoutes()
-  );
-
-  // set a default PING / Health-Check route
-  router.get("/ping", (req: Request, res: Response) =>
-    res.json({
-      status: true,
-      message: "Pong...To infintity and beyooooooond",
-    })
-  );
-
-  // set a default route
-  router.get("*", (req: Request, res: Response, next: NextFunction) =>
-    next(new ReferenceError("Page no longer exists"))
-  );
+  [
+    new CountryController(router),
+    new UserController(router),
+    new UtilController(router),
+  ].forEach((controller) => controller.initializeRoutes());
 
   return router;
 }
