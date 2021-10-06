@@ -4,7 +4,7 @@
   "description": "simple API-service for checking country-by-name",
   "main": "dist/index.js",
   "scripts": {
-    "start": "rm -rf dist/ && npm run build && node dist/index.js",
+    "start": "node dist/index.js",
     "start:dev": "nodemon src/index.ts",
     "build": "tsc --project ./",
     "lint": "tslint src/**/*.ts --fix"
