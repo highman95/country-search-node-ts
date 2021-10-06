@@ -19,7 +19,6 @@ export default class CountryController implements Controller {
       rateLimiter,
       this.getCountriesByName
     );
-    return this.router;
   }
 
   private getCountriesByName = async (

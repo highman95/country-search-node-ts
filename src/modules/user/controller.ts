@@ -10,7 +10,6 @@ export default class UserController implements Controller {
 
   initializeRoutes() {
     this.router.post("/login", this.signIn);
-    return this.router;
   }
 
   public signIn = async (req: Request, res: Response, next: NextFunction) => {
