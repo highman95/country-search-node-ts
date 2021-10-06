@@ -1,9 +1,10 @@
 import { IRouter, NextFunction, Request, Response, Router } from "express";
+import CountryController from "../modules/country/controller";
 import UserController from "../modules/user/controller";
 
 export default function (router: IRouter): Router {
-  [new UserController(router)].forEach((controller) =>
-    controller.initializeRoutes()
+  [new CountryController(router), new UserController(router)].forEach(
+    (controller) => controller.initializeRoutes()
   );
 
   // set a default PING / Health-Check route
