@@ -1,5 +1,4 @@
-import { IRouter, NextFunction, Response } from "express";
-import { AuthedRequest } from "../../interfaces/authedRequest";
+import { IRouter, NextFunction, Request, Response } from "express";
 import Controller from "../../interfaces/controller";
 import Country from "../../interfaces/country";
 import PlatformResponse from "../../interfaces/platformResponse";
@@ -12,7 +11,7 @@ export default class CountryController implements Controller {
     this.initializeRoutes();
   }
 
-  initializeRoutes() {
+  initializeRoutes(): void {
     this.router.get(
       "/country/name/:name",
       authentication,
@@ -21,11 +20,11 @@ export default class CountryController implements Controller {
     );
   }
 
-  private getCountriesByName = async (
-    req: AuthedRequest,
+  private async getCountriesByName(
+    req: Request,
     res: Response,
     next: NextFunction
-  ) => {
+  ) {
     try {
       const { name } = req.params;
       const data = await countryService.getCountriesByName(name);
@@ -44,5 +43,5 @@ export default class CountryController implements Controller {
       // }
       next(e);
     }
-  };
+  }
 }

@@ -8,11 +8,11 @@ export default class UserController implements Controller {
     this.initializeRoutes();
   }
 
-  initializeRoutes() {
+  initializeRoutes(): void {
     this.router.post("/login", this.signIn);
   }
 
-  public signIn = async (req: Request, res: Response, next: NextFunction) => {
+  public async signIn(req: Request, res: Response, next: NextFunction) {
     try {
       const { username, password } = req.body;
 
@@ -22,10 +22,11 @@ export default class UserController implements Controller {
 
       res.status(200).json({
         status: true,
+        message: "Login successful",
         data: { ...user, token },
       });
     } catch (e) {
       next(e);
     }
-  };
+  }
 }
