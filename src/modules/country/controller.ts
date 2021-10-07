@@ -28,7 +28,7 @@ export default class CountryController implements Controller {
   ) => {
     try {
       const { name } = req.params;
-      const data = countryService.getCountriesByName(name);
+      const data = await countryService.getCountriesByName(name);
 
       res.status(200).json({
         status: true,

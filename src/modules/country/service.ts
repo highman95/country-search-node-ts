@@ -16,8 +16,7 @@ class CountryService {
         baseURL: process.env.COUNTRY_LAYER_BASE_URL,
       }
     );
-    const { status, statusText } = response;
-    console.log(`---${status}---${statusText}`);
+    // const { status, statusText } = response;
     return response.data as Country[];
   }
 }
