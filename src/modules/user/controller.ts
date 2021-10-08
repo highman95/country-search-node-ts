@@ -12,7 +12,7 @@ export default class UserController implements Controller {
     this.router.post("/login", this.signIn);
   }
 
-  public async signIn(req: Request, res: Response, next: NextFunction) {
+  private async signIn(req: Request, res: Response, next: NextFunction) {
     try {
       const { username, password } = req.body;
 

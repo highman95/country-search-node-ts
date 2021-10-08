@@ -1,9 +1,9 @@
 import User from "../interfaces/user";
 
 export const user = (): User => ({
-  id: 2021,
-  email: "john@wick.com",
-  firstName: "John",
-  lastName: "Wick",
-  password: "$2a$10$UTmPCP4M1IEXq98lCpQ4p.9MhdxkyQFciTE8EJS2.ES7Xs99g4cJS", // password
+  id: parseInt(process.env.DEFAULT_USER_ID!, 10),
+  firstName: process.env.DEFAULT_USER_LAST_NAME!,
+  lastName: process.env.DEFAULT_USER_FIRST_NAME!,
+  email: process.env.DEFAULT_USER_EMAIL!,
+  password: process.env.DEFAULT_USER_PASSWORD, // password
 });

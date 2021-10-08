@@ -1,4 +1,4 @@
-import { compare } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import {
   sign,
   TokenExpiredError as TokenExpiredError0,
@@ -14,11 +14,11 @@ import {
 //   issuer: process.env.JWT_ISSUER,
 // }());
 
-const secretKey = process.env.JWT_SECRET || "$upercalifragi1is9797t95{~{P#$%^*ticexpialid0ciou$";
+const secretKey = process.env.JWT_SECRET;
 const options = {
-  expiresIn: "24h",
-  subject: process.env.JWT_SUBJECT || "Country-Search-nodeJS",
-  issuer: process.env.JWT_ISSUER || "https://country-search.herokuapp.com",
+  expiresIn: process.env.JWT_EXPIRY,
+  subject: process.env.JWT_SUBJECT,
+  issuer: process.env.JWT_ISSUER,
 };
 
 export interface JWTPayload {
@@ -44,4 +44,8 @@ export async function compareHash(
   hashValue: string | undefined
 ) {
   return await compare(rawValue, hashValue || "");
+}
+
+export async function hashEvery(rawValue: string) {
+  return await hash(rawValue, 10);
 }
