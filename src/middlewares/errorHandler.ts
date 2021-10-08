@@ -7,19 +7,23 @@ const errorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  let message = (err.message || err.error.message) as string;
+  const messageLC = message?.toLowerCase() || "";
+
   const isBRE = err.name === ReferenceError.name; // bad-reference error
   const isTAE =
-    ["token"].includes(err.message.toLowerCase()) &&
-    ["missing", "invalid", "expired"].includes(err.message);
+    messageLC.indexOf("token") >= 0 &&
+    ["required", "invalid", "expired"].some((v) => messageLC.indexOf(v) >= 0);
+  message += isTAE ? " (Unauthorized)" : "";
 
   // client-side (input) error
   const isCSE = [EvalError.name, Error.name, RangeError.name].includes(
     err.name
   );
 
-  res.status(err.status || isBRE ? 404 : isTAE ? 401 : isCSE ? 400 : 500).send({
+  res.status(err.code || isBRE ? 404 : isTAE ? 401 : isCSE ? 400 : 500).send({
     status: false,
-    message: err.message || err.error.message,
+    message,
   });
 };
 

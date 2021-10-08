@@ -23,6 +23,8 @@ const options = {
 
 export interface JWTPayload {
   username: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export function generateToken(payload: JWTPayload) {

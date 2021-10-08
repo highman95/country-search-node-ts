@@ -16,14 +16,20 @@ export default class UserController implements Controller {
     try {
       const { username, password } = req.body;
 
-      const user = await userService.authenticate(username, password);
-      const token = generateToken({ username: user.email });
-      delete user.password; // delete the password
+      const { email, firstName, lastName } = await userService.authenticate(
+        username,
+        password
+      );
+      const token = generateToken({
+        username: email,
+        firstName,
+        lastName,
+      });
 
       res.status(200).json({
         status: true,
         message: "Login successful",
-        data: { ...user, token },
+        data: { firstName, lastName, email, token },
       });
     } catch (e) {
       next(e);
