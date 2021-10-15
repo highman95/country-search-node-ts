@@ -1,5 +1,5 @@
 export default {
-  "/country/name/{name}": {
+  "/countries/name/{name}": {
     get: {
       security: [
         {

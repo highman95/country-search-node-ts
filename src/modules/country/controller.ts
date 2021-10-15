@@ -13,7 +13,7 @@ export default class CountryController implements Controller {
 
   initializeRoutes(): void {
     this.router.get(
-      "/country/name/:name",
+      "/countries/name/:name",
       authentication,
       rateLimiter,
       this.getCountriesByName
@@ -35,12 +35,6 @@ export default class CountryController implements Controller {
         data,
       } as PlatformResponse<Country>);
     } catch (e) {
-      // console.error(`Axios-error: ${JSON.stringify(e, null, 2)}`);
-      // if (axios.isAxiosError(e)) {
-      //   handleAxiosError(e);
-      // } else {
-      //   handleUnexpectedError(e);
-      // }
       next(e);
     }
   }

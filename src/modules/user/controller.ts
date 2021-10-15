@@ -14,17 +14,17 @@ export default class UserController implements Controller {
 
   private async signIn(req: Request, res: Response, next: NextFunction) {
     try {
-      const { username, password } = req.body;
+      const { username, password } = req.body as {
+        username: string;
+        password: string;
+      };
 
       const { email, firstName, lastName } = await userService.authenticate(
         username,
         password
       );
-      const token = generateToken({
-        username: email,
-        firstName,
-        lastName,
-      });
+
+      const token = generateToken({ username, firstName, lastName });
 
       res.status(200).json({
         status: true,
