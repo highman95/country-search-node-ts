@@ -2,9 +2,7 @@ import { IRouter, NextFunction, Request, Response } from "express";
 import Controller from "../../interfaces/controller";
 
 export default class UtilController implements Controller {
-  constructor(private readonly router: IRouter) {
-    this.initializeRoutes();
-  }
+  constructor(private readonly router: IRouter) {}
 
   initializeRoutes(): void {
     // set a default PING / Health-Check route

@@ -4,9 +4,7 @@ import Controller from "../../interfaces/controller";
 import userService from "./service";
 
 export default class UserController implements Controller {
-  constructor(private readonly router: IRouter) {
-    this.initializeRoutes();
-  }
+  constructor(private readonly router: IRouter) {}
 
   initializeRoutes(): void {
     this.router.post("/login", this.signIn);

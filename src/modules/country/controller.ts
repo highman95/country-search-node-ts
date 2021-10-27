@@ -7,9 +7,7 @@ import rateLimiter from "../../middlewares/rateLimiter";
 import countryService from "./service";
 
 export default class CountryController implements Controller {
-  constructor(private readonly router: IRouter) {
-    this.initializeRoutes();
-  }
+  constructor(private readonly router: IRouter) {}
 
   initializeRoutes(): void {
     this.router.get(
