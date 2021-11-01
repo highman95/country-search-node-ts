@@ -3,7 +3,7 @@ import Country from "../../interfaces/country";
 
 class CountryService {
   async getCountriesByName(name: string): Promise<Country[]> {
-    if (name === "" || name.trim() === "") {
+    if (!name?.trim()) {
       throw new Error("Country-name is required");
     }
 
