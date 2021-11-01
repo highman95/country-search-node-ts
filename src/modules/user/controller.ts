@@ -17,12 +17,13 @@ export default class UserController implements Controller {
         password: string;
       };
 
-      const { email, firstName, lastName } = await userService.authenticate(
+      const { id, email, firstName, lastName } = await userService.authenticate(
         username,
         password
       );
 
-      const token = generateToken({ username, firstName, lastName });
+      const mac = `${new Date().getTime()}.${id}.${Math.cbrt(Math.random())}`;
+      const token = generateToken({ username, firstName, lastName, mac });
 
       res.status(200).json({
         status: true,

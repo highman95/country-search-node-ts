@@ -4,11 +4,11 @@ import User from "../../interfaces/user";
 
 class UserService {
   authenticate = async (username: string, password: string): Promise<User> => {
-    if (!username || !username.trim()) {
+    if (!username?.trim()) {
       throw new Error("Username is required");
     }
 
-    if (!password || !password.trim()) {
+    if (!password?.trim()) {
       throw new Error("Password is required");
     }
 

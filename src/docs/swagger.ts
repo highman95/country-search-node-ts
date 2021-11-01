@@ -2,6 +2,7 @@ import components from "./components";
 import paths from "./paths";
 import servers from "./servers";
 
+// https://www.section.io/engineering-education/documenting-node-js-rest-api-using-swagger/
 export default {
   openapi: "3.0.3", // present supported openapi version
   info: {

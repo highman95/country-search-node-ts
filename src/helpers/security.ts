@@ -25,6 +25,7 @@ export interface JWTPayload {
   username: string;
   firstName?: string;
   lastName?: string;
+  mac: string;
 }
 
 export function generateToken(payload: JWTPayload) {
