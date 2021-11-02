@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import moment from "moment";
-import redis from "redis";
+import redisClientConfig from "../../config/redis";
 import {
-  RateLimitPayload,
   RateLimitDuration,
+  RateLimitPayload,
 } from "../../interfaces/rateLimitPayload";
 
 // https://www.section.io/engineering-education/nodejs-rate-limiting/
@@ -33,7 +33,7 @@ export default (
         process.exit(1);
       }
 
-      const client = redis.createClient({ url });
+      const client = redisClientConfig({ url });
 
       // check that redis client exists
       if (!client) {
@@ -48,13 +48,18 @@ export default (
       // define the tracking key
       // const key = ["::1", "localhost"].includes(req.ip) ? "127.0.0.1" : req.ip;
       const key = req.app.get("app-usermac");
-      console.log("[Redis] key: ", key);
+      // console.log("[Redis] key: ", key);
 
       // fetch records of current user using IP address, returns null when no record is found
       client.get(key, (err, record) => {
         if (err) {
-          console.log("[Redis] error-occurred on fetching records...", err);
-          throw err;
+          console.error(`[Redis] ${err.message}...(${err.name})`);
+
+          // don't throw
+          // throw err.name === "AbortError"
+          //   ? new Error("Problem in fetching request logs")
+          //   : err;
+          return next(new Error("Problem in fetching request logs"));
         }
 
         const currentRequestTime = moment();
@@ -62,13 +67,13 @@ export default (
 
         //  if no record is found , create a new record for user and store to redis
         if (record == null) {
-          const newRecord = [];
-          const requestLog = {
-            requestTimeStamp: currentRequestTime.unix(),
-            requestCount: 1,
-          };
+          const newRecord = [
+            {
+              requestTimeStamp: currentRequestTime.unix(),
+              requestCount: 1,
+            },
+          ];
 
-          newRecord.push(requestLog);
           client.set(key, JSON.stringify(newRecord));
           return next();
         }
@@ -95,7 +100,8 @@ export default (
         if (totalWindowRequestsCount >= maxWindowRequestCount) {
           return res.status(429).send({
             status: false,
-            message: `Throttle-limit of ${maxWindowRequestCount} requests in ${windowSize} ${durationUnit} exceeded!`,
+            message: `Throttle limit of requests exceeded!`,
+            // message: `Throttle-limit of ${maxWindowRequestCount} requests in ${windowSize} ${durationUnit} exceeded!`,
           });
         } else {
           // if number of requests made is lesser than allowed maximum, log new entry
