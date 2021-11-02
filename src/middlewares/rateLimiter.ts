@@ -11,7 +11,7 @@ const {
 
   // urls
   MONGO_DB_STORAGE_URL,
-  REDIS_STORAGE_URL,
+  REDIS_URL,
 } = process.env;
 
 // import rateLimit from "express-rate-limit";
@@ -38,7 +38,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
     case "redis":
       return redisRateLimiter(
-        REDIS_STORAGE_URL!,
+        REDIS_URL!,
         +RATE_LIMIT_WINDOW_SIZE!,
         +RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT!,
         +RATE_LIMIT_WINDOW_LOG_INTERVAL!,
