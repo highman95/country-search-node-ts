@@ -13,7 +13,7 @@ export default class CountryController implements Controller {
     this.router.get(
       "/countries/name/:name",
       authentication,
-      rateLimiter,
+      rateLimiter(process.env.RATE_LIMIT_STORAGE_TYPE),
       this.getCountriesByName
     );
   }

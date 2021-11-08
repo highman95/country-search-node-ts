@@ -6,7 +6,6 @@ const {
   RATE_LIMIT_WINDOW_SIZE, // 24 (hours)
   RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT, // 100 (requests)
   RATE_LIMIT_WINDOW_LOG_INTERVAL, // 1 (hours)
-  RATE_LIMIT_STORAGE_TYPE = "redis",
   RATE_LIMIT_DURATION_UNIT = RateLimitDuration.MINUTES,
 
   // urls
@@ -25,27 +24,27 @@ const {
 // make it dynamic to use redis | mongo-db or node-cache
 // serves as factory for selected rate-limiter-type
 
-export default (req: Request, res: Response, next: NextFunction) => {
-  switch (RATE_LIMIT_STORAGE_TYPE) {
-    case "mongodb":
-      return mongoDbRateLimiter(
-        MONGO_DB_STORAGE_URL!,
-        +RATE_LIMIT_WINDOW_SIZE!,
-        +RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT!,
-        +RATE_LIMIT_WINDOW_LOG_INTERVAL!,
-        RATE_LIMIT_DURATION_UNIT
-      )(req, res, next);
+export default (storageType: string | undefined) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    switch (storageType) {
+      case "mongodb":
+        return mongoDbRateLimiter(
+          MONGO_DB_STORAGE_URL!,
+          +RATE_LIMIT_WINDOW_SIZE!,
+          +RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT!,
+          +RATE_LIMIT_WINDOW_LOG_INTERVAL!,
+          RATE_LIMIT_DURATION_UNIT
+        )(req, res, next);
 
-    case "redis":
-      return redisRateLimiter(
-        REDIS_URL!,
-        +RATE_LIMIT_WINDOW_SIZE!,
-        +RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT!,
-        +RATE_LIMIT_WINDOW_LOG_INTERVAL!,
-        RATE_LIMIT_DURATION_UNIT
-      )(req, res, next);
-
-    default:
-      return next();
-  }
+      // redis
+      default:
+        return redisRateLimiter(
+          REDIS_URL!,
+          +RATE_LIMIT_WINDOW_SIZE!,
+          +RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT!,
+          +RATE_LIMIT_WINDOW_LOG_INTERVAL!,
+          RATE_LIMIT_DURATION_UNIT
+        )(req, res, next);
+    }
+  };
 };

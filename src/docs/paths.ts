@@ -64,6 +64,17 @@ export default {
             },
           },
         },
+        429: {
+          description: "Throttle limit of requests exceeded!",
+          content: {
+            // content-type
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/Response", // response data model
+              },
+            },
+          },
+        },
       },
     },
   },
