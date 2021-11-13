@@ -1,9 +1,8 @@
-import { config } from "dotenv";
+import "dotenv/config";
 import { Server } from "http";
 import { AddressInfo } from "net";
 import app from "./app";
 
-config();
 const server: Server = app
   .listen(process.env.PORT || 3000, () => {
     const { address, port } = server.address() as AddressInfo;
