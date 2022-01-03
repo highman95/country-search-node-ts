@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import moment from "moment";
 import redisClientConfig from "../../config/redis";
 import {
-  RateLimitDuration,
+  RateLimitDurationUnit,
   RateLimitPayload,
 } from "../../interfaces/rateLimitPayload";
 
@@ -16,22 +16,22 @@ export default (
   windowSize: number,
   maxWindowRequestCount: number,
   windowLogInterval: number,
-  durationUnit: string
+  durationUnit: RateLimitDurationUnit
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       // check for the compatibility of rate-limit duration-unit
-      if (
-        durationUnit !== RateLimitDuration.HOURS &&
-        durationUnit !== RateLimitDuration.MINUTES &&
-        durationUnit !== RateLimitDuration.SECONDS
-      ) {
-        console.log(
-          "[Redis] Rate-limit duration is neither hours nor minutes",
-          durationUnit
-        );
-        process.exit(1);
-      }
+      // if (
+      //   durationUnit !== RateLimitDuration.HOURS &&
+      //   durationUnit !== RateLimitDuration.MINUTES &&
+      //   durationUnit !== RateLimitDuration.SECONDS
+      // ) {
+      //   console.log(
+      //     "[Redis] Rate-limit duration is neither hours nor minutes",
+      //     durationUnit
+      //   );
+      //   process.exit(1);
+      // }
 
       const client = redisClientConfig({ url });
 
@@ -53,7 +53,7 @@ export default (
       // fetch records of current user using IP address, returns null when no record is found
       client.get(key, (err, record) => {
         if (err) {
-          console.error(`[Redis] ${err.message}...(${err.name})`);
+          // console.error(`[Redis] ${err.message}...(${err.name})`);
 
           // don't throw
           // throw err.name === "AbortError"

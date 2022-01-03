@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { RateLimitDuration } from "../interfaces/rateLimitPayload";
+import { RateLimitDurationUnit } from "../interfaces/rateLimitPayload";
 import { mongoDbRateLimiter, redisRateLimiter } from "./rate-limiter";
 
 const {
   RATE_LIMIT_WINDOW_SIZE, // 24 (hours)
   RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT, // 100 (requests)
   RATE_LIMIT_WINDOW_LOG_INTERVAL, // 1 (hours)
-  RATE_LIMIT_DURATION_UNIT = RateLimitDuration.MINUTES,
+  RATE_LIMIT_DURATION_UNIT, // = RateLimitDuration.MINUTES,
 
   // urls
   MONGO_DB_STORAGE_URL,
@@ -33,7 +33,7 @@ export default (storageType: string | undefined) => {
           +RATE_LIMIT_WINDOW_SIZE!,
           +RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT!,
           +RATE_LIMIT_WINDOW_LOG_INTERVAL!,
-          RATE_LIMIT_DURATION_UNIT
+          RATE_LIMIT_DURATION_UNIT as RateLimitDurationUnit
         )(req, res, next);
 
       // redis
@@ -43,7 +43,7 @@ export default (storageType: string | undefined) => {
           +RATE_LIMIT_WINDOW_SIZE!,
           +RATE_LIMIT_MAX_WINDOW_REQUEST_COUNT!,
           +RATE_LIMIT_WINDOW_LOG_INTERVAL!,
-          RATE_LIMIT_DURATION_UNIT
+          RATE_LIMIT_DURATION_UNIT as RateLimitDurationUnit
         )(req, res, next);
     }
   };
