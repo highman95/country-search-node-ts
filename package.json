@@ -50,6 +50,6 @@
     "moment": "^2.29.1",
     "redis": "^3.1.2",
     "swagger-jsdoc": "^6.1.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.3.0"
   }
 }
